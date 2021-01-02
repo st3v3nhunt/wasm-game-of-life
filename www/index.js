@@ -1,4 +1,4 @@
-import { Universe, Cell } from 'wasm-game-of-life'
+import { Universe } from 'wasm-game-of-life'
 import { memory } from 'wasm-game-of-life/wasm_game_of_life_bg'
 
 const CELL_SIZE = 8 // px
@@ -107,6 +107,8 @@ canvas.addEventListener('click', e => {
 })
 
 const renderLoop = () => {
+  fps.render()
+
   universe.tick()
   drawGrid()
   drawCells()
@@ -114,6 +116,44 @@ const renderLoop = () => {
   animationId = window.requestAnimationFrame(renderLoop)
 }
 
+const fps = new class {
+  constructor () {
+    this.fps = document.getElementById('fps')
+    this.frames = []
+    this.lastFrameTimeStamp = window.performance.now()
+  }
+
+  render () {
+    const now = window.performance.now()
+    const delta = now - this.lastFrameTimeStamp
+    this.lastFrameTimeStamp = now
+    const fps = 1 / delta * 1000
+
+    this.frames.push(fps)
+    if (this.frames.length > 100) {
+      this.frames.shift()
+    }
+
+    let min = Infinity
+    let max = -Infinity
+    let sum = 0
+    for (let i = 0; i < this.frames.length; i++) {
+      sum += this.frames[i]
+      min = Math.min(this.frames[i], min)
+      max = Math.max(this.frames[i], max)
+    }
+    const mean = sum / this.frames.length
+
+    this.fps.textContent = `
+Frames per Second:
+         latest = ${Math.round(fps)}
+avg of last 100 = ${Math.round(mean)}
+min of last 100 = ${Math.round(min)}
+max of last 100 = ${Math.round(max)}
+    `.trim()
+  }
+}()
+
 drawGrid()
 drawCells()
-pause()
+play()
