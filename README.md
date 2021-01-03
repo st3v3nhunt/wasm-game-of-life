@@ -1,50 +1,36 @@
-<div align="center">
+# wasm-game-of-life
 
-  <h1><code>wasm-pack-template</code></h1>
-
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
-
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
-
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
-
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
-</div>
-
-## About
-
-[**📚 Read this template tutorial! 📚**][template-docs]
-
-This template is designed for compiling Rust libraries into WebAssembly and
-publishing the resulting package to NPM.
-
-Be sure to check out [other `wasm-pack` tutorials online][tutorials] for other
-templates and usages of `wasm-pack`.
-
-[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html
-[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html
+> Run through of the tutorial in the
+> [Rust and WebAssembly book](https://rustwasm.github.io/docs/book/introduction.html)
 
 ## 🚴 Usage
-
-### 🐑 Use `cargo generate` to Clone this Template
-
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
-
-```
-cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
-cd my-project
-```
 
 ### 🛠️ Build with `wasm-pack build`
 
 ```
 wasm-pack build
+```
+
+### Run locally via [webpack](https://webpack.js.org/) with `npm run start`
+
+```
+cd www && npm run start
+```
+
+### Run bench marks
+
+Using [`cargo benchcmp`](https://github.com/BurntSushi/cargo-benchcmp) and the
+nightly compiler as per the instructions within the
+[making time run faster](https://rustwasm.github.io/docs/book/game-of-life/time-profiling.html#making-time-run-faster)
+section.
+
+Install the nightly compiler `rustup toolchain install nightly`. More info at
+[installing nightly](https://rust-lang.github.io/rustup/installation/index.html#installing-nightly).
+
+Note the need to remove references to `wasm_bindgen` from `src/lib.rs`.
+
+```
+rustup run nightly cargo bench | tee run-results.txt
 ```
 
 ### 🔬 Test in Headless Browsers with `wasm-pack test`
